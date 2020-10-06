@@ -31,6 +31,10 @@ Folder structure:
 
 Generally, I'd recommend putting `/infrastructure` in its own repo. That way it can stand on its own as the general repo for CI/CD setup and any resources that are not application-specific. For the sake of prototyping, it will all be in one repo, but **2 distinct TF states**.
 
+Comparing this to the AWS blog, this setup combines the "Infrastructure" and "Deployment" OUs into one entity for simplicity.
+
+The blog doesn't explicitly recommending splitting by environment, but for simple clouds I don't think the elaborate breakdown is necessary.
+
 ## Benefits
 
 For this setup, I imagine the benefits to be:
