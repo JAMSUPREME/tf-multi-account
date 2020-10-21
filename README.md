@@ -68,7 +68,45 @@ prod -> test
   - One place for managing the code promotion across envs
   
   
-# Other good ideas
+## Other good ideas
 
 - A general security/logs account might be a good idea to centralize things like CloudTrail & GuardDuty
   
+# Setup
+
+Create the following setup for your local AWS config to verify you can utilize your master account and switch roles into your dev/prod/infra accounts under the primary OU:
+
+In `~/.aws/config` (replace `12345` with correct account number):
+```
+[default]
+region = us-east-1
+
+[profile tf_multi]
+region = us-east-1
+
+[profile tf_multi_dev]
+region = us-east-1
+role_arn = arn:aws:iam::12345:role/OrganizationAccountAccessRole
+source_profile = tf_multi
+
+[profile tf_multi_prod]
+region = us-east-1
+role_arn = arn:aws:iam::12345:role/OrganizationAccountAccessRole
+source_profile = tf_multi
+
+[profile tf_multi_infra]
+region = us-east-1
+role_arn = arn:aws:iam::12345:role/OrganizationAccountAccessRole
+source_profile = tf_multi
+```
+
+And in `~/.aws/credentials`
+```
+[tf_multi]
+aws_access_key_id = BLAH123
+aws_secret_access_key = blahkey123
+```
+
+If you are using 2-factor authentication, then you can use a helper similar to something here: https://github.com/JAMSUPREME/local-development-helpers/blob/master/aws-helpers.sh#L32 _(The only hardcoded part is the MFA ARN but you could put that in a custom file under `~/.aws` that matches per profile)_
+
+**If you're using Windows**, I recommend using **Git Bash** since it is the closest to normal bash syntax while being aware of PATH and doesn't have too much weird powershell or linux subsytem goofiness.
