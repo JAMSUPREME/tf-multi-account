@@ -66,13 +66,49 @@ prod -> test
 - The TF recipes will be less redundant:
   - No need to duplicate the code pipeline in every environment. Infra can set up all the necessary CI/CD and have awareness of touch points in the app infrastructure (s3 bucket, lambda, or whatever is desired)
   - One place for managing the code promotion across envs
-  
-  
-## Other good ideas
 
-- A general security/logs account might be a good idea to centralize things like CloudTrail & GuardDuty
+## Workflow
+
+I'll briefly explain the development lifecycle:
+
+- Create/Modify `/infrastructure` and run `terraform apply` for the shared infrastructure from your local machine
+  - _Note:_ For future modifications, it would be possible to automate modifying the infrastructure (i.e. another CodePipeline for infrastructure to modify itself), but you'd still probably want manual intervention since it could torch everything by accident.
+- Create/Modify `/application`
+- Application code gets picked up by the infrastructure CodePipeline (or jenkins, hooks, etc.)
+- Infrastructure account will build artifacts and deploy to the application account
+
+### Adhoc things
+
+If for some reason you're seeing something unusual in any environment, you have AWS creds to them, so it is possible to manually run a `terraform plan` (or `apply`) to see unusual behavior, or make changes yourself from the console or CLI.
+
+Since Terraform detects and fixes drift, you can safely let your changes get blown away with the next deploy.
   
 # Setup
+
+## Make the accounts
+
+If you haven't already, turn on Organizations in AWS and create 3 accounts under the root:
+- Dev
+- Prod
+- Infra
+
+You can tie these all to the same email address as long as you add a `+` suffix.
+
+For example:
+`justin@gmail.com` (root)
+`justin@gmail+dev.com` (dev)
+`justin@gmail+prod.com` (prod)
+`justin@gmail+infra.com` (infra)
+
+## Make a user in the root account
+
+Since root user shouldn't be used for normal stuff, we'll make another user for ourselves that can switch roles:
+
+- Make an admin user in the root account for yourself.
+- Log in with this user 
+- Make sure you can "switch roles" to switch into the dev, prod, and infra accounts
+
+## Set up local creds
 
 Create the following setup for your local AWS config to verify you can utilize your master account and switch roles into your dev/prod/infra accounts under the primary OU:
 
@@ -110,3 +146,25 @@ aws_secret_access_key = blahkey123
 If you are using 2-factor authentication, then you can use a helper similar to something here: https://github.com/JAMSUPREME/local-development-helpers/blob/master/aws-helpers.sh#L32 _(The only hardcoded part is the MFA ARN but you could put that in a custom file under `~/.aws` that matches per profile)_
 
 **If you're using Windows**, I recommend using **Git Bash** since it is the closest to normal bash syntax while being aware of PATH and doesn't have too much weird powershell or linux subsytem goofiness.
+
+## Spin up terraform
+
+This will be a pretty basic terraform just to act as a proof of concept for wiring up the infra account with the two environments.
+
+TODO
+
+TODO
+
+TODO
+
+# Other thoughts
+
+## Account Mgmt
+
+- A general security/logs account might be a good idea to centralize things like CloudTrail & GuardDuty
+
+## Other Tooling
+
+At the moment, if you're using lambda or s3 it seems fairly prudent to utilize Terraform to bootstrap the infrastructure and then in its CodePipeline setup it will pull the application code and run the application's Terraform.
+
+If using containers, it may be worth using Hashicorp Waypoint to abstract the complexity of ECS/Kubernetes.
