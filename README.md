@@ -72,3 +72,7 @@ prod -> test
 
 - A general security/logs account might be a good idea to centralize things like CloudTrail & GuardDuty
   
+
+# Running the app locally
+
+`./gradlew bootRun` should work for starting the app up. Then navigate to http://localhost:8090 (or whatever port you configure) and it should respond
