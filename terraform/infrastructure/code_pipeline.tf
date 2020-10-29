@@ -21,11 +21,10 @@ resource "aws_codepipeline" "codepipeline" {
       owner            = "ThirdParty"
       provider         = "GitHub"
       version          = "1"
-      output_artifacts = ["source_output"]
 
       configuration = {
-        Owner      = "my-organization"
-        Repo       = "test"
+        Owner      = "jamsupreme"
+        Repo       = "tf-multi-account"
         Branch     = "master"
         OAuthToken = var.github_token
       }
@@ -40,8 +39,8 @@ resource "aws_codepipeline" "codepipeline" {
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
-      input_artifacts  = ["source_output"]
-      output_artifacts = ["build_output"]
+      // input_artifacts  = ["source_output"]
+      // output_artifacts = ["build_output"]
       version          = "1"
 
       configuration = {
@@ -72,10 +71,10 @@ resource "aws_codepipeline" "codepipeline" {
   }
 }
 
-resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = "test-bucket"
-  acl    = "private"
-}
+// resource "aws_s3_bucket" "codepipeline_bucket" {
+//   bucket = "test-bucket"
+//   acl    = "private"
+// }
 
 resource "aws_iam_role" "codepipeline_role" {
   name = "test-role"
