@@ -73,18 +73,31 @@ prod -> test
 - A general security/logs account might be a good idea to centralize things like CloudTrail & GuardDuty
   
 
-# Running the app locally
+# Local development
+
+## Running the app locally
 
 `./gradlew bootRun` should work for starting the app up. Then navigate to http://localhost:8090 (or whatever port you configure) and it should respond
 
-# Building image
+## Building image
 
 `docker build .` from root _(may change once I build useful TF)_
 
-# Run image
+## Run image
 
 `docker run -p 9090:80 67ebb619f0ff` (replace SHA with your build hash)
 
-# Test via docker
+## Test via docker
 
 Visit `http://localhost:9090`
+
+# Terraform
+
+## Github token
+
+If you pull from github, then you should copy the `secrets.tfvars.example` file and rename to `secrets.tfvars` and fill it with your token.
+
+There is a `.gitignore` for `secrets.tfvars`
+
+You can then do:
+``
