@@ -76,3 +76,15 @@ prod -> test
 # Running the app locally
 
 `./gradlew bootRun` should work for starting the app up. Then navigate to http://localhost:8090 (or whatever port you configure) and it should respond
+
+# Building image
+
+`docker build .` from root _(may change once I build useful TF)_
+
+# Run image
+
+`docker run -p 9090:80 67ebb619f0ff` (replace SHA with your build hash)
+
+# Test via docker
+
+Visit `http://localhost:9090`
