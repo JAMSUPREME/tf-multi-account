@@ -196,7 +196,7 @@ You can then do:
 
 And it should be possible to then do an apply:
 
-`terraform apply -var-file="config/dev.tfvars" -var-file="config/secrets.tfvars"`
+`terraform apply -var-file="config/dev.tfvars"` _(`secrets.auto.tfvars` will be picked up automatically)_
 
 # Other thoughts
 

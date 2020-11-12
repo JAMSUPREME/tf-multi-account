@@ -2,15 +2,11 @@ resource "aws_codepipeline" "codepipeline" {
   name     = "docker-builder"
   role_arn = aws_iam_role.codepipeline_role.arn
 
-  // artifact_store {
-  //   location = aws_s3_bucket.codepipeline_bucket.bucket
-  //   type     = "S3"
-
-  //   encryption_key {
-  //     id   = data.aws_kms_alias.s3kmskey.arn
-  //     type = "KMS"
-  //   }
-  // }
+  // TODO: Figure out how to remove this?
+  artifact_store {
+    location = aws_s3_bucket.codepipeline_bucket.bucket
+    type     = "S3"
+  }
 
   stage {
     name = "Source"
@@ -71,10 +67,10 @@ resource "aws_codepipeline" "codepipeline" {
   }
 }
 
-// resource "aws_s3_bucket" "codepipeline_bucket" {
-//   bucket = "test-bucket"
-//   acl    = "private"
-// }
+resource "aws_s3_bucket" "codepipeline_bucket" {
+  bucket = "infra-${var.deploy_env}-terraform-${var.account_number}"
+  acl    = "private"
+}
 
 resource "aws_iam_role" "codepipeline_role" {
   name = "test-role"
