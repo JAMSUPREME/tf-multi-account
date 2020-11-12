@@ -1,7 +1,7 @@
 provider "aws" {
   version = "~> 3"
   region  = "us-east-1"
-  profile = "sdc"
+  profile = "tf_multi_infra"
 }
 
 terraform {
