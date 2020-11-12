@@ -168,3 +168,32 @@ TODO
 At the moment, if you're using lambda or s3 it seems fairly prudent to utilize Terraform to bootstrap the infrastructure and then in its CodePipeline setup it will pull the application code and run the application's Terraform.
 
 If using containers, it may be worth using Hashicorp Waypoint to abstract the complexity of ECS/Kubernetes.
+
+# Local development
+
+## Running the app locally
+
+`./gradlew bootRun` should work for starting the app up. Then navigate to http://localhost:8090 (or whatever port you configure) and it should respond
+
+## Building image
+
+`docker build .` from root _(may change once I build useful TF)_
+
+## Run image
+
+`docker run -p 9090:80 67ebb619f0ff` (replace SHA with your build hash)
+
+## Test via docker
+
+Visit `http://localhost:9090`
+
+# Terraform
+
+## Github token
+
+If you pull from github, then you should copy the `secrets.tfvars.example` file and rename to `secrets.tfvars` and fill it with your token.
+
+There is a `.gitignore` for `secrets.tfvars`
+
+You can then do:
+``
