@@ -147,27 +147,13 @@ If you are using 2-factor authentication, then you can use a helper similar to s
 
 **If you're using Windows**, I recommend using **Git Bash** since it is the closest to normal bash syntax while being aware of PATH and doesn't have too much weird powershell or linux subsytem goofiness.
 
-## Spin up terraform
+**You can verify it works** by doing something like this:
+```
+export AWS_PROFILE=tf_multi_infra
+aws s3 ls
+```
 
-This will be a pretty basic terraform just to act as a proof of concept for wiring up the infra account with the two environments.
-
-TODO
-
-TODO
-
-TODO
-
-# Other thoughts
-
-## Account Mgmt
-
-- A general security/logs account might be a good idea to centralize things like CloudTrail & GuardDuty
-
-## Other Tooling
-
-At the moment, if you're using lambda or s3 it seems fairly prudent to utilize Terraform to bootstrap the infrastructure and then in its CodePipeline setup it will pull the application code and run the application's Terraform.
-
-If using containers, it may be worth using Hashicorp Waypoint to abstract the complexity of ECS/Kubernetes.
+And it should show you the buckets you have in your infrastructure account
 
 # Local development
 
@@ -189,11 +175,37 @@ Visit `http://localhost:9090`
 
 # Terraform
 
+## Infrastructure (Dev)
+
+**Note:** Still considering if we want one terraform recipe per environment, or if each environment would share the same resources. At the moment, it seems like separating resources per environment will be a good idea so that builds and images don't get mixed up.
+
 ## Github token
 
 If you pull from github, then you should copy the `secrets.tfvars.example` file and rename to `secrets.tfvars` and fill it with your token.
 
 There is a `.gitignore` for `secrets.tfvars`
 
+## Create s3 bucket
+
+Create an s3 bucket in the `infra` account and name it something like `infra-dev-terraform-488905147906`
+
+_**Important:** Remember to create the bucket in the correct account (not the root!)_
+
 You can then do:
-``
+`terraform init -backend-config=config/backend-dev.conf`
+
+And it should be possible to then do an apply:
+
+`terraform apply -var-file="config/dev.tfvars" -var-file="config/secrets.tfvars"`
+
+# Other thoughts
+
+## Account Mgmt
+
+- A general security/logs account might be a good idea to centralize things like CloudTrail & GuardDuty
+
+## Other Tooling
+
+At the moment, if you're using lambda or s3 it seems fairly prudent to utilize Terraform to bootstrap the infrastructure and then in its CodePipeline setup it will pull the application code and run the application's Terraform.
+
+If using containers, it may be worth using Hashicorp Waypoint to abstract the complexity of ECS/Kubernetes.
