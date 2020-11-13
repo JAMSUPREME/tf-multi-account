@@ -17,6 +17,7 @@ resource "aws_codepipeline" "codepipeline" {
       owner            = "ThirdParty"
       provider         = "GitHub"
       version          = "1"
+      output_artifacts = ["source_output"]
 
       configuration = {
         Owner      = "jamsupreme"
@@ -35,8 +36,8 @@ resource "aws_codepipeline" "codepipeline" {
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
-      // input_artifacts  = ["source_output"]
-      // output_artifacts = ["build_output"]
+      input_artifacts  = ["source_output"]
+      output_artifacts = ["build_output"]
       version          = "1"
 
       configuration = {
