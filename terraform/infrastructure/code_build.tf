@@ -58,15 +58,11 @@ resource "aws_codebuild_project" "docker_builder" {
     privileged_mode             = true
   }
 
+  // NOTE: Probably want to wire up cloudwatch later
   // logs_config {
   //   cloudwatch_logs {
   //     group_name  = "log-group"
   //     stream_name = "log-stream"
-  //   }
-
-  //   s3_logs {
-  //     status   = "ENABLED"
-  //     location = "${aws_s3_bucket.example.id}/build-log"
   //   }
   // }
 
@@ -74,28 +70,7 @@ resource "aws_codebuild_project" "docker_builder" {
     type            = "GITHUB"
     location        = "https://github.com/JAMSUPREME/tf-multi-account.git"
     git_clone_depth = 1
-
-    // auth {
-    //   type = "OAUTH"
-    //   resource = var.github_token
-    // }
   }
-
-  // source_version = "main"
-
-  // vpc_config {
-  //   vpc_id = aws_vpc.example.id
-
-  //   subnets = [
-  //     aws_subnet.example1.id,
-  //     aws_subnet.example2.id,
-  //   ]
-
-  //   security_group_ids = [
-  //     aws_security_group.example1.id,
-  //     aws_security_group.example2.id,
-  //   ]
-  // }
 
   tags = local.global_tags
 }

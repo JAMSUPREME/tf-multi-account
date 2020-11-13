@@ -13,6 +13,43 @@ The primary objectives are:
 - Be able to easily promote code across environments
 - Be able to configure infrastructure easily without a lot of spaghetti code
 
+# Conclusion
+
+I've concluded it's a better idea to do the following:
+
+**Accounts:**
+- Dev
+- Prod
+
+**Repositories:**
+- App1
+- App2
+- Shared Infrastructure
+
+This allows us to shared resources across apps if desired (VPC, CodeBuild, s3, SNS, etc.) while keeping all the app-specific code in the respective application.
+
+## Why no Infrastructure Account?
+
+Ran into a few issues that made development more problematic than it was worth:
+- When talking about `infrastructure` it wouldn't be clear if we are discussing shared infrastructure, or the actual "infrastructure" account
+- If we need shared infrastructure, we end up with multiple repos and their purposes (and accounts) aren't clearly defined, e.g.
+```
+/app1         (dev, prod)
+/shared-infra (dev, prod)
+/infra        (infra)
+```
+- It may or may not be practical to have a shared CodeBuild/CodePipeline in the infrastructure repo. If apps need unexpected customizations, we'll be cluttering both repos and introducing confusion.
+- The promotion model can be made fairly simple by using SNS, so we won't be tightly coupling environments (see "Benefits" below for my earlier thoughts)
+- The problem of a central ECR repo (or any other resource) can be solved by a distinct `shared-infra` repo, and there is no need for a distinct AWS account
+
+## How is infrastructure created?
+
+My thoughts:
+- Initially it would be bootstrapped by a developer
+- Once bootstrapped _(your CodeBuild exists)_ we can then automatically let Terraform apply itself if desired. I think this would be the most practical option since the infrastructure and code are often dependent on one another
+- Once an app gets a new PR, we can run whatever needs to happen in a `buildspec.yml` for the app (e.g. making the container or JAR)
+- Once the app has built, we can run terraform to update the infrastructure (best practice to make sure no drift)
+
 # High Level Architecture
 
 ## Breakdown
@@ -36,6 +73,8 @@ Comparing this to the AWS blog, this setup combines the "Infrastructure" and "De
 The blog doesn't explicitly recommending splitting by environment, but for simple clouds I don't think the elaborate breakdown is necessary.
 
 ## Benefits
+
+**NOTE:** I'm recanting this idea - we should only need the lower environment to be aware of the higher environment. We can publish to an SNS topic after the e2e tests have passed and that will kickoff any applicable promotion.
 
 For this setup, I imagine the benefits to be:
 - IAM should be simpler than the alternative. Example:
@@ -66,6 +105,15 @@ prod -> test
 - The TF recipes will be less redundant:
   - No need to duplicate the code pipeline in every environment. Infra can set up all the necessary CI/CD and have awareness of touch points in the app infrastructure (s3 bucket, lambda, or whatever is desired)
   - One place for managing the code promotion across envs
+
+## Where does my TF code go?
+
+Thoughts:
+- If an app needs to build differently, is it sufficient that it gets its own buildspec? Or would we need further customization?
+- What belongs in "infrastructure" vs. "application" ?
+  - Infrastructure is a standalone account, so it would be responsible for provisioning cross-app shared infrastructure
+  - A separate repo would be required for init infrastructure (VPC, etc.)
+  - Perhaps better to have a shared infrastructure repo and omit the account?
 
 ## Workflow
 
