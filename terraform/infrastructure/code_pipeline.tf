@@ -22,7 +22,7 @@ resource "aws_codepipeline" "codepipeline" {
       configuration = {
         Owner      = "jamsupreme"
         Repo       = "tf-multi-account"
-        Branch     = "master"
+        Branch     = "main"
         OAuthToken = var.github_token
       }
     }
