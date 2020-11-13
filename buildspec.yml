@@ -1,4 +1,7 @@
 # TODO: probably move this down one folder
+# TODO: Figure out if we can make this dynamic? We will need to use the outputs from TF
+#   Maybe pass dynamic buildspec instead of this static file... ?
+# TODO: also somehow grab latest git SHA and add that as a tag (instead of latest)
 version: 0.2
 
 phases:
@@ -8,3 +11,11 @@ phases:
   build:
     commands:
       - echo "Build started on `date` - not actually doing anything..."
+      - echo "Resolved source version is $CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - echo "Source version is $CODEBUILD_SOURCE_VERSION"
+      - IMAGE_SHA=$(docker build . -q)
+      - IMAGE_ID=$(echo "$IMAGE_SHA" | cut -d ":" -f 2)
+      - ECR_ID="813871934424.dkr.ecr.us-east-1.amazonaws.com/app-images"
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 813871934424.dkr.ecr.us-east-1.amazonaws.com
+      - docker tag $IMAGE_ID $ECR_ID
+      - docker push $ECR_ID
