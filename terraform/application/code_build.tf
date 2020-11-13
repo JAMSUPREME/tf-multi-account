@@ -34,7 +34,7 @@ resource "aws_iam_role_policy" "docker_builder_policy" {
         "logs:*",
         "s3:*",
         "ec2:*",
-        "ecr:GetAuthorizationToken"
+        "ecr:*"
       ]
     }
   ]
@@ -58,6 +58,11 @@ resource "aws_codebuild_project" "docker_builder" {
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
+
+    environment_variable {
+      name  = "ECR_ID"
+      value = aws_ecr_repository.main_ecr.repository_url
+    }
   }
 
   // NOTE: Probably want to wire up cloudwatch later
