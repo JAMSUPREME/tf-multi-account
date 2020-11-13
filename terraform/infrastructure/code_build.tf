@@ -74,9 +74,14 @@ resource "aws_codebuild_project" "docker_builder" {
     type            = "GITHUB"
     location        = "https://github.com/JAMSUPREME/tf-multi-account.git"
     git_clone_depth = 1
+
+    // auth {
+    //   type = "OAUTH"
+    //   resource = var.github_token
+    // }
   }
 
-  source_version = "master"
+  // source_version = "main"
 
   // vpc_config {
   //   vpc_id = aws_vpc.example.id
@@ -93,4 +98,10 @@ resource "aws_codebuild_project" "docker_builder" {
   // }
 
   tags = local.global_tags
+}
+
+resource "aws_codebuild_source_credential" "docker_builder_auth" {
+  auth_type   = "PERSONAL_ACCESS_TOKEN"
+  server_type = "GITHUB"
+  token       = var.github_token
 }
