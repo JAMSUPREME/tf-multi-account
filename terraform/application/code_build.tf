@@ -33,7 +33,8 @@ resource "aws_iam_role_policy" "docker_builder_policy" {
       "Action": [
         "logs:*",
         "s3:*",
-        "ec2:*"
+        "ec2:*",
+        "ecr:GetAuthorizationToken"
       ]
     }
   ]
