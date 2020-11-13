@@ -19,5 +19,6 @@ phases:
       - IMAGE_ID=$(echo "$IMAGE_SHA" | cut -d ":" -f 2)
       - ECR_DNS=$(echo "$ECR_ID" | cut -d "/" -f 1)
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_DNS
-      - docker tag $IMAGE_ID $ECR_ID
+      - docker tag $IMAGE_ID $ECR_ID:latest
+      - docker tag $IMAGE_ID $ECR_ID:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR_ID
