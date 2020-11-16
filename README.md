@@ -233,6 +233,10 @@ If you pull from github, then you should copy the `secrets.tfvars.example` file 
 
 There is a `.gitignore` for `secrets.tfvars`
 
+## Docker token
+
+In order to mitigate docker's image pull throttling, you should authenticate with docker. Create an access token and then paste it into `secrets.tfvars`
+
 ## Create s3 bucket
 
 Create an s3 bucket in the `infra` account and name it something like `infra-dev-terraform-488905147906`
