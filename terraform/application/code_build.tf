@@ -63,6 +63,12 @@ resource "aws_codebuild_project" "docker_builder" {
       name  = "ECR_ID"
       value = aws_ecr_repository.main_ecr.repository_url
     }
+
+    // Note: This should probably be "SECRETS_MANAGER" but for this prototype it's unimportant
+    environment_variable {
+      name  = "DOCKER_TOKEN"
+      value = var.docker_token
+    }
   }
 
   // NOTE: Probably want to wire up cloudwatch later

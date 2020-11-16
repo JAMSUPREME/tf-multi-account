@@ -10,6 +10,10 @@ variable "github_token" {
   type        = string
   description = "github token for pulling code from github"
 }
+variable "docker_token" {
+  type        = string
+  description = "docker token for pulling images from docker (or you will get throttled)"
+}
 
 locals {
   global_tags = {
