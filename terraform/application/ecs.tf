@@ -55,22 +55,11 @@ resource "aws_ecs_service" "app" {
   }
 
   depends_on = [aws_lb_listener.http_forward, aws_iam_role_policy_attachment.ecs_task_execution_role]
-
-  // iam_role        = aws_iam_role.foo.arn # necessary for ELB?
-  // depends_on      = [aws_iam_role_policy.foo]
-
-  // TODO: load balancer
-  // load_balancer {
-  //   target_group_arn = aws_lb_target_group.foo.arn
-  //   container_name   = "mongo"
-  //   container_port   = 8080
-  // }
 }
 
 #
 # IAM policy
 #
-
 
 resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "ecs-${var.deploy_env}-execution-role"
@@ -98,6 +87,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+// TODO: secure this to HTTP/HTTPS only
 resource "aws_security_group" "ecs_tasks" {
   name        = "ecs-tasks-sg"
   description = "allow inbound access from the ALB only"
