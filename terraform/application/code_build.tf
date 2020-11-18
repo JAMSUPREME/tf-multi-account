@@ -94,7 +94,6 @@ resource "aws_codebuild_source_credential" "docker_builder_auth" {
   token       = var.github_token
 }
 
-// Add webhook so builds get trigger automatically
 resource "aws_codebuild_webhook" "docker_builder_webhook" {
   project_name = aws_codebuild_project.docker_builder.name
 
