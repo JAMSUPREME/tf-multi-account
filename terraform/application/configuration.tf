@@ -1,7 +1,7 @@
 provider "aws" {
   version = "~> 3"
   region  = "us-east-1"
-  profile = "tf_multi_dev"
+  profile = var.profile
 }
 
 terraform {

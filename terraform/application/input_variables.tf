@@ -1,3 +1,7 @@
+variable "profile" {
+  type        = string
+  description = "Local AWS profile to use for terraform apply"
+}
 variable "deploy_env" {
   type        = string
   description = "Deploy environment (dev, prod, test)"
