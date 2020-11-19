@@ -74,7 +74,7 @@ The blog doesn't explicitly recommending splitting by environment, but for simpl
 
 ## Benefits
 
-**NOTE:** I'm recanting this idea - we should only need the lower environment to be aware of the higher environment. We can publish to an SNS topic after the e2e tests have passed and that will kickoff any applicable promotion.
+**NOTE:** I'm recanting this idea - the coupling will be fairly minimal, and less problematic than coupling to a limited-use infrastructure account.
 
 For this setup, I imagine the benefits to be:
 - IAM should be simpler than the alternative. Example:
