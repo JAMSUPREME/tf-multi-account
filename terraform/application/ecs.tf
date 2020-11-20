@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "app_service" {
   requires_compatibilities = ["FARGATE"]
   // double-check network mode?
   network_mode             = "awsvpc" 
-  container_definitions = templatefile("ecs_task_definition.json.tpl", {
+  container_definitions = templatefile("ecs_task_definition.tpl.json", {
     app_port = 80,
     application_name = local.app_name,
     aws_ecr_repository = aws_ecr_repository.main_ecr.repository_url

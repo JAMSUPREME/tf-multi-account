@@ -8,6 +8,9 @@
 
 - As coded. Will clarify
 - Also add bash helpers
+- Template files will have `.tpl` prepended to their file extension. For example, `file.tpl.json` or `file.tpl.xml`
+- Place `locals` applicable to a single file at the top of the file
+- Place global `locals` at the bottom of the `input_variables.tf` file
 
 # Code Promotion
 
