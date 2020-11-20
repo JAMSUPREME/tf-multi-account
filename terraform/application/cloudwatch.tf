@@ -7,7 +7,7 @@ resource "aws_cloudwatch_event_permission" "organization_access" {
   condition {
     key   = "aws:PrincipalOrgID"
     type  = "StringEquals"
-    value = aws_organizations_organization.current_org.id
+    value = data.aws_organizations_organization.current_org.id
   }
 }
 
@@ -22,7 +22,7 @@ resource "aws_cloudwatch_event_rule" "build_promotion" {
 
 // Send to the next environment's SNS build topic
 resource "aws_cloudwatch_event_target" "sns" {
-  count     = var.build_promotion_sns_topic_arn == "" ? 0 : 1
+  count     = var.build_promotion_event_bus_arn == "" ? 0 : 1
   rule      = aws_cloudwatch_event_rule.build_promotion.name
   target_id = "SendToHigherEnvironmentEventBus"
   arn       = var.build_promotion_event_bus_arn
@@ -42,7 +42,7 @@ resource "aws_iam_role" "event_pusher" {
       {
         "Effect": "Allow",
         "Principal": {
-          "Service": "codebuild.amazonaws.com"
+          "Service": "events.amazonaws.com"
         },
         "Action": "sts:AssumeRole"
       }
@@ -54,6 +54,7 @@ resource "aws_iam_role" "event_pusher" {
 }
 
 resource "aws_iam_role_policy" "event_pusher_policy" {
+  count  = var.build_promotion_event_bus_arn == "" ? 0 : 1
   name = "${var.deploy_env}-event-pusher-policy"
   role = aws_iam_role.event_pusher.name
 
@@ -64,13 +65,10 @@ resource "aws_iam_role_policy" "event_pusher_policy" {
       {
         "Effect": "Allow",
         "Resource": [
-          "*"
+          "${var.build_promotion_event_bus_arn}"
         ],
         "Action": [
-          "logs:*",
-          "s3:*",
-          "ec2:*",
-          "ecr:*"
+          "events:PutEvents"
         ]
       }
     ]

@@ -30,7 +30,7 @@ variable "docker_token" {
 #
 # Inputs with defaults
 #
-variable "build_promotion_sns_topic_arn" {
+variable "build_promotion_event_bus_arn" {
   type        = string
   default     = ""
   description = "SNS topic ARN that will trigger a build in the subsequent environment."
