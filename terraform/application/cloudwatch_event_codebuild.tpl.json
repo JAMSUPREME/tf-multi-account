@@ -10,7 +10,7 @@
       "SUCCEEDED"
     ],
     "project-name": [
-      "my-demo-project-1"
+      "${project_name}"
     ]
   }  
 }

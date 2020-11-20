@@ -43,7 +43,7 @@ resource "aws_iam_role_policy" "docker_builder_policy" {
 }
 
 resource "aws_codebuild_project" "docker_builder" {
-  name          = "docker-builder"
+  name          = "${var.deploy_env}-docker-builder"
   description   = "Builds docker images"
   build_timeout = "5"
   service_role  = aws_iam_role.docker_builder.arn
