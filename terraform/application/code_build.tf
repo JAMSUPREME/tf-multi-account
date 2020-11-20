@@ -1,45 +1,45 @@
 resource "aws_iam_role" "docker_builder" {
   name = "docker_builder"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "codebuild.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  assume_role_policy = <<-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "codebuild.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  }
+  EOF
 }
 
 resource "aws_iam_role_policy" "docker_builder_policy" {
   name = "${var.deploy_env}-docker-codebuild-policy"
   role = aws_iam_role.docker_builder.name
 
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Resource": [
-        "*"
-      ],
-      "Action": [
-        "logs:*",
-        "s3:*",
-        "ec2:*",
-        "ecr:*"
-      ]
-    }
-  ]
-}
-POLICY
+  policy = <<-POLICY
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Resource": [
+          "*"
+        ],
+        "Action": [
+          "logs:*",
+          "s3:*",
+          "ec2:*",
+          "ecr:*"
+        ]
+      }
+    ]
+  }
+  POLICY
 }
 
 resource "aws_codebuild_project" "docker_builder" {

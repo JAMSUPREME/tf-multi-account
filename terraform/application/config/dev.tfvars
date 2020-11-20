@@ -13,4 +13,6 @@ lower_environment_account_number = ""
 // build_success_topics = [
 
 // ]
-build_promotion_sns_topic_arn = "arn:aws:sns:us-east-1:017016463659:app_build_trigger"
+// build_promotion_sns_topic_arn = "arn:aws:sns:us-east-1:017016463659:app_build_trigger"
+
+build_promotion_event_bus_arn = "arn:aws:events:us-east-1:017016463659:event-bus/default"
