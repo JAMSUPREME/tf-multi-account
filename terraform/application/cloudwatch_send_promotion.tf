@@ -20,10 +20,6 @@ resource "aws_cloudwatch_event_rule" "build_promotion" {
   })
 }
 
-// 
-// TODO: add email target
-// 
-
 // Send to the next environment's event bus
 resource "aws_cloudwatch_event_target" "promotion_account_bus" {
   count     = var.build_promotion_event_bus_arn == "" ? 0 : 1
@@ -33,12 +29,19 @@ resource "aws_cloudwatch_event_target" "promotion_account_bus" {
   role_arn  = aws_iam_role.event_pusher.arn
 }
 
-// temporarily also sending to SNS so we can email ourselves that this event occurred
+// Email team of successful build
 resource "aws_cloudwatch_event_target" "local_email" {
   rule      = aws_cloudwatch_event_rule.build_promotion.name
   target_id = "SendToSNS"
   arn       = aws_sns_topic.build_emailer.arn
+  input     = jsonencode(
+    {
+      buildComplete = "true",
+      environment = var.deploy_env
+    }
+  )
 }
+// TODO: add auto-subscription here?
 
 #
 # IAM

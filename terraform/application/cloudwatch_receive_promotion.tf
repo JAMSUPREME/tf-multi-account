@@ -16,4 +16,10 @@ resource "aws_cloudwatch_event_target" "receive_promotion_target_email" {
   rule      = aws_cloudwatch_event_rule.receive_promotion[0].name
   target_id = "SendToSNS"
   arn       = aws_sns_topic.build_emailer.arn
+  input     = jsonencode(
+    {
+      receivedPromotion = "true",
+      environment = var.deploy_env
+    }
+  )
 }
