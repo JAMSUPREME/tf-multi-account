@@ -27,6 +27,7 @@ variable "docker_token" {
   description = "docker token for pulling images from docker (or you will get throttled)"
 }
 
+
 #
 # Inputs with defaults
 #
@@ -34,6 +35,11 @@ variable "build_promotion_event_bus_arn" {
   type        = string
   default     = ""
   description = "SNS topic ARN that will trigger a build in the subsequent environment."
+}
+variable "automatic_builds" {
+  type        = bool
+  default     = false
+  description = "Whether or not builds are triggered automatically upon main branch commit. Generally reserved for dev"
 }
 
 
