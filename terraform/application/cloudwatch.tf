@@ -20,13 +20,24 @@ resource "aws_cloudwatch_event_rule" "build_promotion" {
   })
 }
 
-// Send to the next environment's SNS build topic
-resource "aws_cloudwatch_event_target" "sns" {
+// 
+// TODO: add email target
+// 
+
+// Send to the next environment's event bus
+resource "aws_cloudwatch_event_target" "promotion_account_bus" {
   count     = var.build_promotion_event_bus_arn == "" ? 0 : 1
   rule      = aws_cloudwatch_event_rule.build_promotion.name
   target_id = "SendToHigherEnvironmentEventBus"
   arn       = var.build_promotion_event_bus_arn
   role_arn  = aws_iam_role.event_pusher.arn
+}
+
+// temporarily also sending to SNS so we can email ourselves that this event occurred
+resource "aws_cloudwatch_event_target" "local_email" {
+  rule      = aws_cloudwatch_event_rule.build_promotion.name
+  target_id = "SendToSNS"
+  arn       = aws_sns_topic.build_emailer.arn
 }
 
 #

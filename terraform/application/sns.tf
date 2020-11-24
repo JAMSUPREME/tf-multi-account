@@ -20,3 +20,11 @@ resource "aws_sns_topic_policy" "default" {
     lower_environment_account_arn = local.lower_environment_account_arn
   })
 }
+
+
+// For emailing us on successful build
+// For now, subscription is manual, but can add it
+resource "aws_sns_topic" "build_emailer" {
+  name = "build_email"
+  tags = local.global_tags
+}
