@@ -1,0 +1,8 @@
+{
+  "account": [
+    "${lower_environment_account_number}"
+  ],
+  "source": [ 
+    "aws.codebuild"
+  ]
+}
