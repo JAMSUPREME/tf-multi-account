@@ -89,3 +89,39 @@ Things to keep in mind with this approach:
 - The new stack should not cause any side effects in the normal working environment (e.g. `dev`)
 - If possible, there should be minimal or no manual provisioning involved to avoid blunders or botched cleanup
 - You must remember to destroy this environment after completing your work
+
+# Local development vs. Remote
+
+- If using docker-compose & ECS, the two configs will necessarily drift
+- If using Kubernetes, it should be possible to run them locally and in the cloud with little to no drift 
+- Regardless of tooling, there would likely be drift anyway given that we may use provider-specific tooling like RDS or Lambda. These concepts don't map directly to Waypoint, Kubernetes, etc. and therefore it's necessary to have something distinct for local development.
+
+## Recommendations
+
+- 
+
+# Waypoint
+
+I have a few reservations about Waypoint:
+- Currently investigating `Dockerfile` support
+- Limited documentation/features. Most behavior is intentionally opaque.
+- Limited guidance on big setups (e.g. multiple dependent applications, or even an app with a DB)
+- The HTTPS support is via public DNS, and doesn't support non-HTTPS protocols (like db connections)
+
+Good features:
+- Can set base image or provide dockerfile: https://www.waypointproject.io/plugins/docker#docker-builder
+- ENV variables can be passed: https://www.waypointproject.io/docs/app-config
+- Minimal setup (downside is that there aren't many touchpoints for customization)
+
+## Concluding thoughts on Waypoint
+
+- Might be viable for local development, but has drawbacks for dependencies (e.g. database)
+- Wouldn't recommend trying it out for a production app since we might hit issues with customizations that we cannot do
+- It requires a long-lived waypoint server, which is also a drawback
+
+# Kubernetes
+
+TODO: see if we can run kubernetes locally, then we can share a config.
+
+Maybe use with minikube? (see https://kubernetes.io/docs/tasks/tools/)
+Skaffold for consistency from dev to prod?
