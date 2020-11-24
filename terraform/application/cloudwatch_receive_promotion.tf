@@ -10,7 +10,6 @@ resource "aws_cloudwatch_event_rule" "receive_promotion" {
   })
 }
 
-// TODO: also trigger a code build
 resource "aws_cloudwatch_event_target" "receive_promotion_target_email" {
   count     = var.lower_environment_account_number == "" ? 0 : 1
   rule      = aws_cloudwatch_event_rule.receive_promotion[0].name
