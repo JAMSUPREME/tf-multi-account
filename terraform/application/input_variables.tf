@@ -14,10 +14,6 @@ variable "lower_environment_account_number" {
   type        = string
   description = "AWS account number of the lower environment. Allows lower environment to promote to current environment."
 }
-// variable "higher_environment_account_number" {
-//   type        = string
-//   description = "AWS account number of the higher (next) environment. Used for pushing notifications to it."
-// }
 variable "github_token" {
   type        = string
   description = "github token for pulling code from github"

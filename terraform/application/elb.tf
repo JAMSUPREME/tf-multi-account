@@ -1,4 +1,4 @@
-locals{
+locals {
   app_name = "basic_java_app"
 }
 

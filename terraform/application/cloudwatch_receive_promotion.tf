@@ -1,4 +1,4 @@
-// This rule receives promotion and triggers builds in the current env
+# This rule receives promotion and triggers builds in the current env
 
 resource "aws_cloudwatch_event_rule" "receive_promotion" {
   count     = var.lower_environment_account_number == "" ? 0 : 1

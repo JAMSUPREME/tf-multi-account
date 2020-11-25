@@ -64,20 +64,20 @@ resource "aws_codebuild_project" "docker_builder" {
       value = aws_ecr_repository.main_ecr.repository_url
     }
 
-    // Note: This should probably be "SECRETS_MANAGER" but for this prototype it's unimportant
+    # Note: This should probably be "SECRETS_MANAGER" but for this prototype it's unimportant
     environment_variable {
       name  = "DOCKER_TOKEN"
       value = var.docker_token
     }
   }
 
-  // NOTE: Probably want to wire up cloudwatch later
-  // logs_config {
-  //   cloudwatch_logs {
-  //     group_name  = "log-group"
-  //     stream_name = "log-stream"
-  //   }
-  // }
+  # NOTE: Probably want to wire up cloudwatch later
+  # logs_config {
+  #   cloudwatch_logs {
+  #     group_name  = "log-group"
+  #     stream_name = "log-stream"
+  #   }
+  # }
 
   source {
     type            = "GITHUB"

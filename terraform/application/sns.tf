@@ -1,10 +1,10 @@
 locals {
-  // When creating an SNS policy, we must use the root ARN
+  # When creating an SNS policy, we must use the root ARN
   lower_environment_account_arn = "arn:aws:iam::${var.lower_environment_account_number}:root"
 }
 
-// The lower environment will push its build success notification
-// to this topic, and from there we will trigger a build
+# The lower environment will push its build success notification
+# to this topic, and from there we will trigger a build
 resource "aws_sns_topic" "build_trigger_topic" {
   name = "app_build_trigger"
   tags = local.global_tags
@@ -22,8 +22,8 @@ resource "aws_sns_topic_policy" "default" {
 }
 
 
-// For emailing us on successful build
-// For now, subscription is manual, but can add it
+# For emailing us on successful build
+# For now, subscription is manual, but can add it
 resource "aws_sns_topic" "build_emailer" {
   name = "build_email"
   tags = local.global_tags

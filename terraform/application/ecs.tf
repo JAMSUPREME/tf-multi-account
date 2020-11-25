@@ -7,7 +7,7 @@ resource "aws_ecs_cluster" "app_cluster" {
   name = "my-app-cluster"
 }
 
-// log group for ECS app
+# log group for ECS app
 resource "aws_cloudwatch_log_group" "api" {
   name              = "awslogs-${local.app_name}"
   retention_in_days = 30
@@ -15,14 +15,13 @@ resource "aws_cloudwatch_log_group" "api" {
   tags = local.global_tags
 }
 
-// Note: Passing "tag" as an arg, it may be possible to adjust that so it takes an adjustable build SHA?
+# Note: Passing "tag" as an arg, it may be possible to adjust that so it takes an adjustable build SHA?
 resource "aws_ecs_task_definition" "app_service" {
   family                = "app_service"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   cpu                      = 256
   memory                   = 2048
   requires_compatibilities = ["FARGATE"]
-  // double-check network mode?
   network_mode             = "awsvpc" 
   container_definitions = templatefile("ecs_task_definition.tpl.json", {
     app_port = 80,
@@ -34,7 +33,7 @@ resource "aws_ecs_task_definition" "app_service" {
 }
 
 
-// NOTE: For now doing basic rolling updates and not fancy blue/green as that requires more CodeDeploy setup
+# NOTE: For now doing basic rolling updates and not fancy blue/green as that requires more CodeDeploy setup
 resource "aws_ecs_service" "app" {
   name            = "my_app"
   cluster         = aws_ecs_cluster.app_cluster.id
@@ -87,7 +86,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-// TODO: secure this to HTTP/HTTPS only
+# TODO: secure this to HTTP/HTTPS only
 resource "aws_security_group" "ecs_tasks" {
   name        = "ecs-tasks-sg"
   description = "allow inbound access from the ALB only"

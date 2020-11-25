@@ -20,7 +20,7 @@ resource "aws_cloudwatch_event_rule" "build_promotion" {
   })
 }
 
-// Send to the next environment's event bus
+# Send to the next environment's event bus
 resource "aws_cloudwatch_event_target" "promotion_account_bus" {
   count     = var.build_promotion_event_bus_arn == "" ? 0 : 1
   rule      = aws_cloudwatch_event_rule.build_promotion.name
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_event_target" "promotion_account_bus" {
   role_arn  = aws_iam_role.event_pusher.arn
 }
 
-// Email team of successful build
+# Email team of successful build
 resource "aws_cloudwatch_event_target" "local_email" {
   rule      = aws_cloudwatch_event_rule.build_promotion.name
   target_id = "SendToSNS"
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_event_target" "local_email" {
     }
   )
 }
-// TODO: add auto-subscription here?
+# TODO: add auto-subscription here?
 
 #
 # IAM
