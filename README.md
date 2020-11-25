@@ -144,9 +144,9 @@ You can tie these all to the same email address as long as you add a `+` suffix.
 
 For example:
 `justin@gmail.com` (root)
-`justin@gmail+dev.com` (dev)
-`justin@gmail+prod.com` (prod)
-`justin@gmail+infra.com` (infra)
+`justin+dev@gmail.com` (dev)
+`justin+prod@gmail.com` (prod)
+`justin+infra@gmail.com` (infra)
 
 ## Make a user in the root account
 
