@@ -96,32 +96,37 @@ Things to keep in mind with this approach:
 - If using Kubernetes, it should be possible to run them locally and in the cloud with little to no drift 
 - Regardless of tooling, there would likely be drift anyway given that we may use provider-specific tooling like RDS or Lambda. These concepts don't map directly to Waypoint, Kubernetes, etc. and therefore it's necessary to have something distinct for local development.
 
+## Local options
+
+docker-compose in **each application** that knows its dependencies
+- Works for DB, cache, etc.
+- Works **with assumptions/conventions** when doing multiple app development
+- Dependencies are explicit during local development (as well as infrastructure)
+- Some potential for redundancy when all apps intend to share a DB or cache locally
+
+docker-compose in a **standalone** "local-development" repo
+- One large docker-compose, so only one place to look for updates
+- Can get unwieldy or tedious if you only care about one application
+- Has **assumptions** that all repos will be checkedd out
+
+**How will shared resources work?** - As much as possible, I would suggest we avoid sharing resources across applications if they introduce coupling. However, I think it would be possible to set up shared volumes or services if that was necessary.
+
+For example, 
+- If 2 apps logged to the same s3 bucket, that is OK and isn't tight coupling.
+- If 2 apps read/write from the same database tables, that might be a sign of tight coupling or bad domain separation.
+
+
 ## Recommendations
 
-- 
+Create a docker-compose for each application. Reasons are as follows:
+- No need to worry about bugs in other apps breaking your own (if app has no dependencies)
+- If/when there is a dependency on another app, it is explicitly documented in the docker-compose
+- No need for any additional tooling aside from docker-compose (which is bundled with docker)
 
 # Waypoint
 
-I have a few reservations about Waypoint:
-- Currently investigating `Dockerfile` support
-- Limited documentation/features. Most behavior is intentionally opaque.
-- Limited guidance on big setups (e.g. multiple dependent applications, or even an app with a DB)
-- The HTTPS support is via public DNS, and doesn't support non-HTTPS protocols (like db connections)
-
-Good features:
-- Can set base image or provide dockerfile: https://www.waypointproject.io/plugins/docker#docker-builder
-- ENV variables can be passed: https://www.waypointproject.io/docs/app-config
-- Minimal setup (downside is that there aren't many touchpoints for customization)
-
-## Concluding thoughts on Waypoint
-
-- Might be viable for local development, but has drawbacks for dependencies (e.g. database)
-- Wouldn't recommend trying it out for a production app since we might hit issues with customizations that we cannot do
-- It requires a long-lived waypoint server, which is also a drawback
+Noted benefits/drawbacks of Waypoint in WAYPOINT.md
 
 # Kubernetes
 
-TODO: see if we can run kubernetes locally, then we can share a config.
-
-Maybe use with minikube? (see https://kubernetes.io/docs/tasks/tools/)
-Skaffold for consistency from dev to prod?
+Noted benefits/drawbacks of Kubernetes in KUBERNETES.md
