@@ -59,10 +59,10 @@ Here's an example:
 # backend-dev-justin.conf
 
 # Make sure you are using the correct bucket for your env (dev, prod, etc.)
-bucket = "dev-dot-sdc-regional-lambda-bucket-911061262852-us-east-1"
+bucket = "dev-bucket"
 profile = "sdc"
 # Change the following key to be a unique identifier for you (e.g. name)
-key = "sdc-dot-waze-pipeline/terraform/terraform-justin.tfstate"
+key = "terraform-justin.tfstate"
 ```
 
 Once your infrastructure is stable, you should do the following:
