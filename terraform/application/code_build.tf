@@ -95,7 +95,7 @@ resource "aws_codebuild_source_credential" "docker_builder_auth" {
 }
 
 resource "aws_codebuild_webhook" "docker_builder_webhook" {
-  count = var.automatic_builds ? 1 : 0
+  count        = var.automatic_builds ? 1 : 0
   project_name = aws_codebuild_project.docker_builder.name
 
   filter_group {

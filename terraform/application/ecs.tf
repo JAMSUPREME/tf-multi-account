@@ -17,15 +17,15 @@ resource "aws_cloudwatch_log_group" "api" {
 
 # Note: Passing "tag" as an arg, it may be possible to adjust that so it takes an adjustable build SHA?
 resource "aws_ecs_task_definition" "app_service" {
-  family                = "app_service"
+  family                   = "app_service"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   cpu                      = 256
   memory                   = 2048
   requires_compatibilities = ["FARGATE"]
-  network_mode             = "awsvpc" 
+  network_mode             = "awsvpc"
   container_definitions = templatefile("ecs_task_definition.tpl.json", {
-    app_port = 80,
-    application_name = local.app_name,
+    app_port           = 80,
+    application_name   = local.app_name,
     aws_ecr_repository = aws_ecr_repository.main_ecr.repository_url
     tag                = "latest"
   })
@@ -92,10 +92,10 @@ resource "aws_security_group" "ecs_tasks" {
   description = "allow inbound access from the ALB only"
 
   ingress {
-    protocol        = "-1"
-    from_port       = 0
-    to_port         = 0
-    cidr_blocks     = ["0.0.0.0/0"]
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {

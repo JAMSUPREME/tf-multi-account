@@ -34,10 +34,10 @@ resource "aws_cloudwatch_event_target" "local_email" {
   rule      = aws_cloudwatch_event_rule.build_promotion.name
   target_id = "SendToSNS"
   arn       = aws_sns_topic.build_emailer.arn
-  input     = jsonencode(
+  input = jsonencode(
     {
       buildComplete = "true",
-      environment = var.deploy_env
+      environment   = var.deploy_env
     }
   )
 }
@@ -68,9 +68,9 @@ resource "aws_iam_role" "event_pusher" {
 }
 
 resource "aws_iam_role_policy" "event_pusher_policy" {
-  count  = var.build_promotion_event_bus_arn == "" ? 0 : 1
-  name = "${var.deploy_env}-event-pusher-policy"
-  role = aws_iam_role.event_pusher.name
+  count = var.build_promotion_event_bus_arn == "" ? 0 : 1
+  name  = "${var.deploy_env}-event-pusher-policy"
+  role  = aws_iam_role.event_pusher.name
 
   policy = <<-POLICY
   {
