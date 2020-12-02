@@ -250,6 +250,20 @@ And it should be possible to then do an apply:
 
 `terraform apply -var-file="config/dev.tfvars"` _(`secrets.auto.tfvars` will be picked up automatically)_
 
+# Using CDK TF
+
+Make sure you have CDK TF installed: https://learn.hashicorp.com/tutorials/terraform/cdktf-install
+Also install pipenv: https://pipenv.pypa.io/en/latest/ (`brew install pipenv`)
+
+For this example, I am using python largely because Boto (https://docs.aws.amazon.com/pythonsdk/?id=docs_gateway) is in python and I think it may be useful to leverage the 2 in conjunction. 
+
+Initialize:
+`cdktf init --template="python"`
+
+## Concerns
+
+- State is stored in Terraform Cloud by default, but we will want to manage it ourselves in s3
+
 # Other thoughts
 
 ## Account Mgmt
