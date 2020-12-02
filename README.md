@@ -257,7 +257,37 @@ I'm initially trying this out with Typescript for a couple reasons:
 - The documentation is very sparse, and it is hard to find how the resources are represented in code
 - There are more examples and support in TS
 
+Do:
+```
+# generate stuff
+cdktf init --template=typescript
 
+# export desired profile
+export AWS_PROFILE=tf_multi_dev
+
+# install deps
+cdktf get
+```
+
+After you've installed the dependencies, you'll be able to view all the objects you can work with under `.gen/providers/aws`.
+
+For example, if you want to see how to configure `AwsProvider`, view the `.gen/providers/aws/aws-provider.ts` file.
+
+Now let's try deploying:
+`cdktf deploy`
+
+## Using s3 state
+
+By default we are using the Terraform Cloud state. While it's possible you want to use Terraform's cloud offering, it's more likely that you just want to stuff your state into an s3 bucket.
+
+We can configure that as follows:
+
+TODO
+
+## Concerns
+
+- State is stored in Terraform Cloud by default, but we will want to manage it ourselves in s3
+- The diff report `cdktf diff` is not as detailed as the normal `terraform plan`
 
 ## Trying Python
 
@@ -269,9 +299,7 @@ I wanted to try Python largely because Boto (https://docs.aws.amazon.com/pythons
 Initialize:
 `cdktf init --template="python"`
 
-## Concerns
 
-- State is stored in Terraform Cloud by default, but we will want to manage it ourselves in s3
 
 # Other thoughts
 
