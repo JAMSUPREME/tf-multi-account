@@ -290,10 +290,13 @@ For example, I dropped the `cdk.tf.json` file directly from the CDK directory in
 
 Compared to vanilla Terraform, this introduces an additional synthesis step, but it's a nice feature that they can coexist if desired.
 
-## Concerns
+## Thoughts
 
-- State is stored in Terraform Cloud by default, but we will want to manage it ourselves in s3
+- The CDK doesn't automatically keep all resources in scope (must explicitly pass variables as outputs)
 - The diff report `cdktf diff` is not as detailed as the normal `terraform plan`
+- You could use composition or inheritance in a much simpler way (compared to modules)
+- Looping is much simpler (compared to HCL)
+- It **should** be possible to follow similar conventions for both styles
 
 ## Trying Python
 
