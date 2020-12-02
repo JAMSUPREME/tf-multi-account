@@ -252,10 +252,19 @@ And it should be possible to then do an apply:
 
 # Using CDK TF
 
+I'm initially trying this out with Typescript for a couple reasons:
+- The brunt of TF CDK (and in fact, AWS CDK) seems to be written in typescript
+- The documentation is very sparse, and it is hard to find how the resources are represented in code
+- There are more examples and support in TS
+
+
+
+## Trying Python
+
 Make sure you have CDK TF installed: https://learn.hashicorp.com/tutorials/terraform/cdktf-install
 Also install pipenv: https://pipenv.pypa.io/en/latest/ (`brew install pipenv`)
 
-For this example, I am using python largely because Boto (https://docs.aws.amazon.com/pythonsdk/?id=docs_gateway) is in python and I think it may be useful to leverage the 2 in conjunction. 
+I wanted to try Python largely because Boto (https://docs.aws.amazon.com/pythonsdk/?id=docs_gateway) is in python and I think it may be useful to leverage the 2 in conjunction. 
 
 Initialize:
 `cdktf init --template="python"`
