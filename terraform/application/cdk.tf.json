@@ -1,0 +1,35 @@
+{
+  "//": {
+    "metadata": {
+      "version": "0.0.18",
+      "stackName": "tf-cdk"
+    }
+  },
+  "resource": {
+    "aws_sns_topic": {
+      "Topic": {
+        "display_name": "first-topic-displayy",
+        "name": "my-first-topic",
+        "//": {
+          "metadata": {
+            "path": "tf-cdk/Topic",
+            "uniqueId": "Topic",
+            "stackTrace": [
+              "new TerraformElement (/Users/jspencer/Github/tf-multi-account/tf-cdk/node_modules/cdktf/lib/terraform-element.js:19:28)",
+              "new TerraformResource (/Users/jspencer/Github/tf-multi-account/tf-cdk/node_modules/cdktf/lib/terraform-resource.js:15:9)",
+              "new SnsTopic (/Users/jspencer/Github/tf-multi-account/tf-cdk/.gen/providers/aws/sns-topic.js:13:9)",
+              "new MyStack (/Users/jspencer/Github/tf-multi-account/tf-cdk/main.js:16:9)",
+              "Object.<anonymous> (/Users/jspencer/Github/tf-multi-account/tf-cdk/main.js:23:15)",
+              "Module._compile (internal/modules/cjs/loader.js:999:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)",
+              "Module.load (internal/modules/cjs/loader.js:863:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:708:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:60:12)",
+              "internal/main/run_main_module.js:17:47"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

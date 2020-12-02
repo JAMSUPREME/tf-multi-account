@@ -280,9 +280,15 @@ Now let's try deploying:
 
 By default we are using the Terraform Cloud state. While it's possible you want to use Terraform's cloud offering, it's more likely that you just want to stuff your state into an s3 bucket.
 
-We can configure that as follows:
+Refer to `main.ts` to see that the `RemoteBackend` has been replaced with an S3 one.
 
-TODO
+## Hybrid CDK Terraform usage
+
+Since the `synth` command just generates a JSON file, we can easily use this in conjunction with an existing Terraform setup. 
+
+For example, I dropped the `cdk.tf.json` file directly from the CDK directory into our Terraform app root (`/terraform/application/cdk.tf.json`) and upon running `terraform plan` it will read configuration from that file and accordingly provision those resources.
+
+Compared to vanilla Terraform, this introduces an additional synthesis step, but it's a nice feature that they can coexist if desired.
 
 ## Concerns
 
