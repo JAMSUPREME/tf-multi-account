@@ -44,4 +44,5 @@ locals {
     "SourceRepo"  = "tf-multi-account"
     "Environment" = var.deploy_env
   }
+  cdk_sns_topic_name = "my-first-topic-vanilla"
 }

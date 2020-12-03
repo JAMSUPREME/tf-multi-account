@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { App, TerraformStack } from 'cdktf';
+import { App, TerraformStack, TerraformLocal } from 'cdktf';
 import { S3Backend } from 'cdktf';
 // import { RemoteBackend } from 'cdktf';
 import { AwsProvider, SnsTopic } from './.gen/providers/aws'
@@ -25,10 +25,12 @@ class MyStack extends TerraformStack {
         key: "terraform.tfstate",
         region: "us-east-1"
       });
+      new TerraformLocal(this, 'cdk_sns_topic_name', 'my-first-topic');
     }
 
+    // Note: I'm using TF interpolation here instead of a variable to see if it would work in a hybrid setup
     new SnsTopic(this, 'myFirstTopic', {
-      name: 'my-first-topic',
+      name: '${local.cdk_sns_topic_name}',
       displayName: 'first-topic-displayy'
     });
 
@@ -37,7 +39,7 @@ class MyStack extends TerraformStack {
 }
 
 const app = new App();
-new MyStack(app, 'tf-cdk', false);
+new MyStack(app, 'tf-cdk', true);
 
 // TODO: replace this with an s3 backend
 // new RemoteBackend(stack, {

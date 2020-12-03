@@ -7,19 +7,19 @@
   },
   "resource": {
     "aws_sns_topic": {
-      "Topic": {
+      "myFirstTopic": {
         "display_name": "first-topic-displayy",
-        "name": "my-first-topic",
+        "name": "${local.cdk_sns_topic_name}",
         "//": {
           "metadata": {
-            "path": "tf-cdk/Topic",
-            "uniqueId": "Topic",
+            "path": "tf-cdk/myFirstTopic",
+            "uniqueId": "myFirstTopic",
             "stackTrace": [
               "new TerraformElement (/Users/jspencer/Github/tf-multi-account/tf-cdk/node_modules/cdktf/lib/terraform-element.js:19:28)",
               "new TerraformResource (/Users/jspencer/Github/tf-multi-account/tf-cdk/node_modules/cdktf/lib/terraform-resource.js:15:9)",
               "new SnsTopic (/Users/jspencer/Github/tf-multi-account/tf-cdk/.gen/providers/aws/sns-topic.js:13:9)",
-              "new MyStack (/Users/jspencer/Github/tf-multi-account/tf-cdk/main.js:16:9)",
-              "Object.<anonymous> (/Users/jspencer/Github/tf-multi-account/tf-cdk/main.js:23:15)",
+              "new MyStack (/Users/jspencer/Github/tf-multi-account/tf-cdk/main.js:28:9)",
+              "Object.<anonymous> (/Users/jspencer/Github/tf-multi-account/tf-cdk/main.js:36:1)",
               "Module._compile (internal/modules/cjs/loader.js:999:30)",
               "Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)",
               "Module.load (internal/modules/cjs/loader.js:863:32)",
