@@ -2,7 +2,8 @@ import { Construct } from 'constructs';
 import { App, TerraformStack } from 'cdktf';
 import { S3Backend } from 'cdktf';
 // import { RemoteBackend } from 'cdktf';
-import { AwsProvider, SnsTopic, IamRole, IamRolePolicy } from './.gen/providers/aws'
+import { AwsProvider, SnsTopic } from './.gen/providers/aws'
+import { appendCodeBuildResources } from './codeBuild'
 
 
 // 
@@ -31,47 +32,7 @@ class MyStack extends TerraformStack {
       displayName: 'first-topic-displayy'
     });
 
-    const cdkRole = new IamRole(this, 'cdkCodeBuildRole', {
-      name: 'cdk_docker_builder',
-      assumeRolePolicy: `{
-        "Version": "2012-10-17",
-        "Statement": [
-          {
-            "Effect": "Allow",
-            "Principal": {
-              "Service": "codebuild.amazonaws.com"
-            },
-            "Action": "sts:AssumeRole"
-          }
-        ]
-      }`
-    });
-
-    new IamRolePolicy(this, 'cdkCodeBuildRolePolicy', {
-      name: 'cdk-docker-codebuild-policy',
-      // Note that under the hood this will generate "${aws_iam_role.cdkCodeBuildRole.name}"
-      // so it is also possible to use the raw interpolation value and we can effectively grab a value from our "vanilla Terraform" resources
-      // or vice versa
-      role: cdkRole.name,
-      policy: `{
-        "Version": "2012-10-17",
-        "Statement": [
-          {
-            "Effect": "Allow",
-            "Resource": [
-              "*"
-            ],
-            "Action": [
-              "logs:*",
-              "s3:*",
-              "ec2:*",
-              "ecr:*"
-            ]
-          }
-        ]
-      }`
-    });
-    
+    appendCodeBuildResources(this);
   }
 }
 
